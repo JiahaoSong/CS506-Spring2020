@@ -11,7 +11,18 @@ def point_avg(points):
     
     Returns a new point which is the center of all the points.
     """
-    raise NotImplementedError()
+    dim = len(points[0])
+    avgs = []
+
+    for x in range(dim):
+        avg = 0
+        for point in points:
+            avg += point[x]
+        
+        avg /= len(points)
+        avgs.append(avg)
+
+    return avgs
 
 
 def update_centers(dataset, assignments):
@@ -21,7 +32,16 @@ def update_centers(dataset, assignments):
     Compute the center for each of the assigned groups.
     Return `k` centers in a list
     """
-    raise NotImplementedError()
+    clustering = defaultdict(list)
+    centers = []
+    for assignment, point in zip(assignments, dataset):
+        clustering[assignment].append(point)
+    
+    for c in clustering:
+        center = point_avg(clustering[c])
+        centers.append(center)
+    
+    return centers
 
 
 def assign_points(data_points, centers):
@@ -44,7 +64,12 @@ def distance(a, b):
     """
     Returns the Euclidean distance between a and b
     """
-    raise NotImplementedError()
+    dim = len(a)
+    dist = 0
+    for x in range(dim):
+        dist += (a[x] - b[x]) ** 2
+    
+    return dist ** (1 / 2)
 
 
 def generate_k(dataset, k):
@@ -52,15 +77,22 @@ def generate_k(dataset, k):
     Given `data_set`, which is an array of arrays,
     return a random set of k points from the data_set
     """
-    raise NotImplementedError()
+    return random.sample(dataset, k = k)
 
 
 def cost_function(clustering):
-    raise NotImplementedError()
+    cost = 0
+    for c in clustering:
+        center = point_avg(clustering[c])
+        for point in clustering[c]:
+            cost += distance(point, point)
+    
+    return cost
+
 
 
 def generate_k_pp(dataset, k):
-    raise NotImplementedError()
+    pass
 
 
 def _do_lloyds_algo(dataset, k_points):
