@@ -1,3 +1,7 @@
+def isSquare(matrix):
+    N = len(matrix)
+    return all(len(row) == N for row in matrix)
+
 def determinant(matrix):
     """
     Compute the determinant of a square matrix.
@@ -7,11 +11,11 @@ def determinant(matrix):
     Output: the determinant of the input
     """
     if matrix is None or len(matrix) == 0:
-        raise ValueError("The list should not be empty.")
+        raise ValueError("The matrix should not be empty.")
 
-    if len(matrix) != len(matrix[0]):
+    if not isSquare(matrix):
         raise ValueError("The matrix must be square.")
-
+    
     N = len(matrix) # the dimension of the matrix
     if N == 1:
         return matrix[0][0]
@@ -22,4 +26,3 @@ def determinant(matrix):
         subMatrix = [x[: i] + x[i + 1:] for x in matrix[1:]]
         result += ((-1) ** i) * matrix[0][i] * determinant(subMatrix)
     return result
-    
